@@ -1,10 +1,15 @@
-FROM nikolaik/python-nodejs:python3.10-nodejs19
+FROM python:3.10-slim-bullseye
 
-RUN apt-get update && apt-get install -y ffmpeg opus-tools python3-pip
+# System dependencies install karna
+RUN apt-get update -y && apt-get upgrade -y \
+    && apt-get install -y --no-install-recommends ffmpeg opus-tools git \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 COPY . .
 
+# Requirements install karna
 RUN pip3 install --no-cache-dir -U -r requirements.txt
 
+# Bot start karna
 CMD ["python3", "-m", "YukkiMusic"]
